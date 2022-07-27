@@ -16,6 +16,7 @@ namespace ConsoleApp1
 
         public DateTime TimeOfContact { get; set; }
 
+        //Парсинг строк из csv файла их форматирование и запись в поля модели
         public void ParsingLine(string line)
         {
             string[] parts = line.Split(';');
@@ -45,6 +46,7 @@ namespace ConsoleApp1
             }
         }
 
+        //Чтение csv файла
         public static List<Organization> ReadFile(string filePath)
         {
             List<Organization> resultData = new List<Organization>();
@@ -58,9 +60,10 @@ namespace ConsoleApp1
                     Organization model = new Organization();
                     model.ParsingLine(line);
                     int indexOfmodel = resultData.FindIndex(x => x.OrganizationName == model.OrganizationName);
-
+                    //Проверка существует ли данная организация в списке организаций
                     if (indexOfmodel == -1)
                         resultData.Add(model);
+                    //Запись уникальных данных в уже добавленные организации
                     else
                     {
                         foreach (var email in model.Emails)
@@ -83,6 +86,7 @@ namespace ConsoleApp1
             return resultData;
         }
 
+        //Приведение номера телефона к виду последовательность цифр
         public string FormatNumber(string numberPhone)
         {
             numberPhone = numberPhone.Replace("-", "");
@@ -93,6 +97,7 @@ namespace ConsoleApp1
             return numberPhone;
         }
 
+        //Преобразование списка строк в одну, для записи в csv файл
         public static string TranformToString(List<string> line)
         {
             string resultLine = "";
@@ -104,6 +109,7 @@ namespace ConsoleApp1
             return resultLine;
         }
 
+        //Запись в csv файл
         public static void WriteFile(List<Organization> modelList, string filePath)
         {
             List<string> lines = new List<string>();
